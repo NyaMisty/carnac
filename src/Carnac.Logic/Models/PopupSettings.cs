@@ -142,5 +142,9 @@ namespace Carnac.Logic.Models
         [DefaultValue(0)]
         public double ClickStopOpacity { get; set; }
         public string ClickColor { get; set; }
+
+        
+        [DefaultValue("cmd|powershell")]
+        public string ShellFilterExpression { get; set; }
     }
 }

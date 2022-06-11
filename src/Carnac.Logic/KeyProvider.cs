@@ -58,11 +58,27 @@ namespace Carnac.Logic
 
         private Regex GetRegEx()
         {
-            if(settings?.ProcessFilterExpression == null)
+            if (settings?.ProcessFilterExpression == null)
             {
                 return null;
             }
-            return new Regex(settings?.ProcessFilterExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
+            return GetRegEx(settings?.ProcessFilterExpression);
+        }
+
+        private Regex GetShellRegEx()
+        {
+            if (settings?.ShellFilterExpression == null)
+            {
+                return null;
+            }
+
+            return GetRegEx(settings?.ShellFilterExpression);
+        }
+
+        private static Regex GetRegEx(string processFilterExpression)
+        {
+            return new Regex(processFilterExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
         }
 
         public IObservable<KeyPress> GetKeyStream()
@@ -120,14 +136,21 @@ namespace Carnac.Logic
             {
                 return null;
             }
-            
+
             Debug.WriteLine("processName: " + process.ProcessName);
 
             var filterRegex = GetRegEx();
 
+            // If there's a filter, process it.
             if (filterRegex != null && !filterRegex.IsMatch(process.ProcessName))
             {
-                return null;
+                // If there's no match, check if parent is a shell, and if so, check for child processes names.
+                var parentFilterRegex = GetShellRegEx();
+                if (parentFilterRegex == null) return null;
+                if (!parentFilterRegex.IsMatch(process.ProcessName) || !ProcessEntry.HasChildProcessMatching(process, filterRegex))
+                {
+                    return null;
+                }
             }
 
             if (!settings.ShowMouseClickKeys && (interceptKeyEventArgs.Key == Keys.LButton || interceptKeyEventArgs.Key == Keys.MButton || interceptKeyEventArgs.Key == Keys.RButton || interceptKeyEventArgs.Key == Keys.XButton1 || interceptKeyEventArgs.Key == Keys.XButton2))
