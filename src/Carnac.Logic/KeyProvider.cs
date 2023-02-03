@@ -137,7 +137,9 @@ namespace Carnac.Logic
                 return null;
             }
 
+            /*
             Debug.WriteLine("processName: " + process.ProcessName);
+            */
 
             var filterRegex = GetRegEx();
 

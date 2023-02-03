@@ -2,6 +2,7 @@ using Carnac.Logic.MouseMonitor;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
 
@@ -115,7 +116,10 @@ namespace Carnac.Logic.Models
             return new Message(this, newMessage, true);
         }
 
-    static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(1);
+        /*
+        static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(1);
+        */
+        static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(0.5);
 
         public static Message MergeIfNeeded(Message previousMessage, Message newMessage)
         {
@@ -134,6 +138,9 @@ namespace Carnac.Logic.Models
 
         static bool ShouldCreateNewMessage(Message previous, Message current)
         {
+            return current.LastMessage.Subtract(previous.LastMessage) > OneSecond ||
+                previous.ProcessName != current.ProcessName;
+            /*
             return previous.ProcessName != current.ProcessName ||
                    current.LastMessage.Subtract(previous.LastMessage) > OneSecond ||
                    KeyProvider.IsModifierKeyPress(current.keys[0].InterceptKeyEventArgs) ||
@@ -145,6 +152,7 @@ namespace Carnac.Logic.Models
                    ((InterceptMouse.MouseKeys.Contains(current.keys[0].Key) ||
                    (previous.keys != null && InterceptMouse.MouseKeys.Contains(previous.keys[0].Key)))
                    && !previous.keys[0].Input.SequenceEqual(current.keys[0].Input));
+            */
         }
 
         public Message FadeOut()
@@ -165,6 +173,9 @@ namespace Carnac.Logic.Models
                   if (acc.Any())
                   {
                       var last = acc.Last();
+                      /*
+                      if (last.IsRepeatedBy(curr))
+                      */
                       var secondLast = acc.Count() > 1 ? acc.SkipLast(1).Last() : null;
                       var thirdLast = acc.Count() > 2 ? acc.SkipLast(2).Last() : null;
                       if (last.IsRepeatedBy(curr) &&
@@ -235,13 +246,19 @@ namespace Carnac.Logic.Models
             public IEnumerable<string> GetTextParts()
             {
                 if (requiresPrefix)
+                    /*
                     yield return ", ";
+                    */
+                    yield return "";
                 foreach (var textPart in textParts)
                 {
                     yield return textPart;
                 }
                 if (repeatCount > 1)
+                    /*
                     yield return string.Format(" x {0} ", repeatCount);
+                    */
+                    yield return string.Format("�{0}", repeatCount);
             }
         }
 
