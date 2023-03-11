@@ -138,10 +138,14 @@ namespace Carnac.Logic.Models
 
         static bool ShouldCreateNewMessage(Message previous, Message current)
         {
-            return current.LastMessage.Subtract(previous.LastMessage) > OneSecond ||
-                previous.ProcessName != current.ProcessName;
-            /*
-            return previous.ProcessName != current.ProcessName ||
+            if (false)
+            {
+                return current.LastMessage.Subtract(previous.LastMessage) > OneSecond ||
+                    previous.ProcessName != current.ProcessName;
+
+            } else
+            {
+                return previous.ProcessName != current.ProcessName ||
                    current.LastMessage.Subtract(previous.LastMessage) > OneSecond ||
                    KeyProvider.IsModifierKeyPress(current.keys[0].InterceptKeyEventArgs) ||
                    // accumulate also same modifier shortcuts
@@ -152,7 +156,7 @@ namespace Carnac.Logic.Models
                    ((InterceptMouse.MouseKeys.Contains(current.keys[0].Key) ||
                    (previous.keys != null && InterceptMouse.MouseKeys.Contains(previous.keys[0].Key)))
                    && !previous.keys[0].Input.SequenceEqual(current.keys[0].Input));
-            */
+            }
         }
 
         public Message FadeOut()
@@ -258,7 +262,7 @@ namespace Carnac.Logic.Models
                     /*
                     yield return string.Format(" x {0} ", repeatCount);
                     */
-                    yield return string.Format("�{0}", repeatCount);
+                    yield return string.Format("×{0}", repeatCount);
             }
         }
 
