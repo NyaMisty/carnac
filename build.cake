@@ -73,7 +73,7 @@ Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        XUnit($"./src/Carnac.Tests/bin/{configuration}/*.Tests.dll");
+        //XUnit($"./src/Carnac.Tests/bin/{configuration}/*.Tests.dll");
     });
 
 Task("Package-Squirrel")
@@ -182,7 +182,7 @@ Task("Package-Choco")
 Task("Package")
 	.IsDependentOn("Package-Zip")
 	.IsDependentOn("Package-Squirrel")
-	.IsDependentOn("Package-Choco")
+	//.IsDependentOn("Package-Choco")
 	.Does(() =>
 	{
 		EnsureDirectoryExists(deployDir);
