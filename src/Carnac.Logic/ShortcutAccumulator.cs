@@ -10,10 +10,12 @@ namespace Carnac.Logic
         List<KeyShortcut> possibleKeyShortcuts;
         Message[] messages;
         readonly List<KeyPress> keys;
+        readonly PopupSettings settings;
 
-        public ShortcutAccumulator()
+        public ShortcutAccumulator(PopupSettings settings)
         {
             keys = new List<KeyPress>();
+            this.settings = settings;
         }
 
         public IEnumerable<KeyPress> Keys
@@ -24,7 +26,13 @@ namespace Carnac.Logic
         public ShortcutAccumulator ProcessKey(IShortcutProvider shortcutProvider, KeyPress key)
         {
             if (HasCompletedValue)
-                return new ShortcutAccumulator().ProcessKey(shortcutProvider, key);
+                return new ShortcutAccumulator(settings).ProcessKey(shortcutProvider, key);
+
+            if (!settings.UseKeyMap)
+            {
+                Complete(key);
+                return this;
+            }
 
             if (!keys.Any())
             {

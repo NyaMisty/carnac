@@ -149,6 +149,9 @@
                         <ui:PreferencesField Header="Show Space as ␣">
                             <CheckBox IsChecked="{Binding Settings.ShowSpaceAsUnicode}" Content="Show Space as Unicode character '␣'" />
                         </ui:PreferencesField>
+                        <ui:PreferencesField Header="Use Key Map">
+                            <CheckBox IsChecked="{Binding Settings.UseKeyMap}" Content="Use KeyMap to parse shortcuts" />
+                        </ui:PreferencesField>
                         <ui:PreferencesField Header="Show Application Icon">
                             <CheckBox IsChecked="{Binding Settings.ShowApplicationIcon}" Content="Display the icon of the active application" />
                         </ui:PreferencesField>

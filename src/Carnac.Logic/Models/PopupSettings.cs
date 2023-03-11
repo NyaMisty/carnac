@@ -93,6 +93,8 @@ namespace Carnac.Logic.Models
         public bool SettingsConfigured { get; set; }
         public bool ShowOnlyModifiers { get; set; }
         public bool ShowSpaceAsUnicode { get; set; }
+        [DefaultValue(true)]
+        public bool UseKeyMap { get; set; }
 
         [DefaultValue(true)]
         public bool ShowMouseClicks { get; set; }

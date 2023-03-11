@@ -33,7 +33,7 @@ namespace Carnac.Logic
             msg merger  :  a---*ab-----------ctrl+r,ctrl+r-------------ctrl+r---a-----↓---*'↓ x2'
             */
             return keyProvider.GetKeyStream()
-                .Scan(new ShortcutAccumulator(), (acc, key) => acc.ProcessKey(shortcutProvider, key))
+                .Scan(new ShortcutAccumulator(settings), (acc, key) => acc.ProcessKey(shortcutProvider, key))
                 .Where(c => c.HasCompletedValue)
                 .SelectMany(c => c.GetMessages())
                 .Scan(new Message(), (acc, key) => Message.MergeIfNeeded(acc, key))
