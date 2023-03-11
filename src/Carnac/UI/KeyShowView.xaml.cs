@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using Carnac.Logic;
+using Carnac.Utilities;
 using Gma.System.MouseKeyHook;
 
 namespace Carnac.UI
@@ -26,6 +27,7 @@ namespace Carnac.UI
             base.OnSourceInitialized(e);
 
             var hwnd = new WindowInteropHelper(this).Handle;
+            WindowUtilities.SetAlwaysMaxSize(hwnd);
             Win32Methods.SetWindowExTransparentAndNotInWindowList(hwnd);
             var timer = new Timer(100);
             timer.Elapsed +=
