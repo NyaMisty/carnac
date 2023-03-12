@@ -28,18 +28,21 @@ namespace Carnac.UI
 
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowUtilities.SetAlwaysMaxSize(hwnd);
-            Win32Methods.SetWindowExTransparentAndNotInWindowList(hwnd);
-            var timer = new Timer(100);
-            timer.Elapsed +=
-                (s, x) =>
-                {
-                    SetWindowPos(hwnd,
-                                 HWND.TOPMOST,
-                                 0, 0, 0, 0,
-                                 (uint)(SWP.NOMOVE | SWP.NOSIZE | SWP.SHOWWINDOW));
-                };
+            if (!System.Diagnostics.Debugger.IsAttached)
+            {
+                Win32Methods.SetWindowExTransparentAndNotInWindowList(hwnd);
+                var timer = new Timer(100);
+                timer.Elapsed +=
+                    (s, x) =>
+                    {
+                        SetWindowPos(hwnd,
+                                     HWND.TOPMOST,
+                                     0, 0, 0, 0,
+                                     (uint)(SWP.NOMOVE | SWP.NOSIZE | SWP.SHOWWINDOW));
+                    };
 
-            timer.Start();
+                timer.Start();
+            }
 
             var vm = ((KeyShowViewModel)DataContext);
             Left = vm.Settings.Left;
