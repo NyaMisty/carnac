@@ -7,7 +7,7 @@
                       xmlns:utilities="clr-namespace:Carnac.Utilities"
                       xmlns:carnac="clr-namespace:Carnac"
                       x:Class="Carnac.UI.PreferencesView"
-                      Width="610" Height="430" Icon="../icon.ico"
+                      Width="610" Height="552" Icon="../icon.ico"
                       Foreground="{DynamicResource BlackBrush}"
                       d:DataContext="{d:DesignInstance ui:PreferencesViewModel}" mc:Ignorable="d"
                       ShowTitleBar="False" ShowMinButton="False" ShowMaxRestoreButton="False"
@@ -128,6 +128,20 @@
                             LargeChange="2" Maximum="48" Minimum="8" SmallChange="1" TickFrequency="1" />
                             <ui:PreferencesField.SecondaryControl>
                                 <TextBox Foreground="White" Text="{Binding Settings.FontSize}" />
+                            </ui:PreferencesField.SecondaryControl>
+                        </ui:PreferencesField>
+                        <ui:PreferencesField Header="Popup Spacing">
+                            <Slider Value="{Binding Settings.ItemSpacing}" IsSnapToTickEnabled="True"
+                            LargeChange="2" Maximum="50" Minimum="0" SmallChange="1" TickFrequency="1" />
+                            <ui:PreferencesField.SecondaryControl>
+                                <TextBox Foreground="White" Text="{Binding Settings.ItemSpacing}" />
+                            </ui:PreferencesField.SecondaryControl>
+                        </ui:PreferencesField>
+                        <ui:PreferencesField Header="KeyCap Padding Height">
+                            <Slider Value="{Binding KeyCapPaddingHeight}" IsSnapToTickEnabled="True"
+                            LargeChange="2" Maximum="50" Minimum="0" SmallChange="1" TickFrequency="1" />
+                            <ui:PreferencesField.SecondaryControl>
+                                <TextBox Foreground="White" Text="{Binding KeyCapPaddingHeight}" />
                             </ui:PreferencesField.SecondaryControl>
                         </ui:PreferencesField>
                         <ui:PreferencesField Header="Font Colour">

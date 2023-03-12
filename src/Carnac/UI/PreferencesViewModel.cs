@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Carnac.Logic;
@@ -75,6 +76,7 @@ namespace Carnac.UI
                 XButton2ClickColor = new AvailableColor("Plum", Colors.Plum);
             }
 
+            KeyCapPaddingHeight = Settings.ItemKeyCapPadding.Top;
 
             SaveCommand = new DelegateCommand(SaveSettings);
             ResetToDefaultsCommand = new DelegateCommand(() => settingsProvider.ResetToDefaults<PopupSettings>());
@@ -146,6 +148,8 @@ namespace Carnac.UI
 
         public AvailableColor XButton2ClickColor { get; set; }
 
+        public double KeyCapPaddingHeight { get; set; }
+
         void Visit()
         {
             try
@@ -189,6 +193,8 @@ namespace Carnac.UI
             Settings.ScrollClickColor = ScrollClickColor.Name;
             Settings.XButton1ClickColor = XButton1ClickColor.Name;
             Settings.XButton2ClickColor = XButton2ClickColor.Name;
+
+            Settings.ItemKeyCapPadding = new Thickness(Settings.ItemKeyCapPadding.Left, KeyCapPaddingHeight, Settings.ItemKeyCapPadding.Right, KeyCapPaddingHeight);
             settingsProvider.SaveSettings(Settings);
         }
 

@@ -10,6 +10,15 @@ namespace Carnac.Logic.Models
         [DefaultValue(350)]
         public int ItemMaxWidth { get; set; }
 
+        [DefaultValue(100)]
+        public int ItemMaxHeight { get; set; }
+
+        [DefaultValue(0)]
+        public int ItemSpacing { get; set; }
+
+        [DefaultValue(typeof(Thickness), "2,0")]
+        public Thickness ItemKeyCapPadding { get; set; }
+
         [DefaultValue(0.5)]
         public double ItemOpacity { get; set; }
 

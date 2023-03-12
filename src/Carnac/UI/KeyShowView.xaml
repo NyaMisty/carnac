@@ -359,14 +359,21 @@
               Background="Transparent" Focusable="False" IsHitTestVisible="False" BorderBrush="Transparent"
               BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Hidden"
               ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.LayoutTransform>
                 <ScaleTransform ScaleY="{Binding Settings.ScaleTransform}" />
             </ListView.LayoutTransform>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border x:Name="Border" Margin="0, 0, 0, 3" HorizontalAlignment="Stretch"
+                    <Border x:Name="Border" Margin="0, 0, 0, 0" HorizontalAlignment="Stretch"
                         Opacity="{Binding DataContext.Settings.ItemOpacity, Source={x:Reference This}}"
-                        IsHitTestVisible="True" Focusable="True" BorderThickness="4" CornerRadius="15" Padding="3">
+                        IsHitTestVisible="True" Focusable="True" BorderThickness="{Binding DataContext.Settings.ItemSpacing, Source={x:Reference This}}" CornerRadius="15" Padding="3">
                         <Border.Background>
                             <SolidColorBrush Color="{Binding DataContext.Settings.ItemBackgroundColor, Source={x:Reference This}}" />
                         </Border.Background>
@@ -392,7 +399,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Margin="3" Width="20" Height="20"  Visibility="{Binding DataContext.Settings.ShowApplicationIcon,Source={x:Reference This},
                             Converter={StaticResource BooleanToVisibilityConverter}}" Source="{Binding ProcessIcon, Mode=OneWay}" />
-                            <ListBox MaxWidth="{Binding DataContext.Settings.ItemMaxWidth, Source={x:Reference This}}"
+                            <ListBox MaxWidth="{Binding DataContext.Settings.ItemMaxWidth, Source={x:Reference This}}" MaxHeight="{Binding DataContext.Settings.ItemMaxHeight, Source={x:Reference This}}"
                              HorizontalAlignment="Stretch" VerticalContentAlignment="Center" ItemsSource="{Binding Text, Mode=OneWay}"
                              FontWeight="Bold" Focusable="False" BorderBrush="{x:Null}"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsHitTestVisible="False">
@@ -416,8 +423,8 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Border x:Name="KeyCapBorder" Margin="2" Visibility="Collapsed" CornerRadius="5"
-                                            Padding="2,5">
+                                            <Border x:Name="KeyCapBorder" Margin="1" Visibility="Collapsed" CornerRadius="5"
+                                            Padding="{Binding DataContext.Settings.ItemKeyCapPadding, Source={x:Reference This}}">
                                                 <Border.Background>
                                                     <SolidColorBrush Color="{Binding DataContext.Settings.FontColor, Source={x:Reference This}}" />
                                                 </Border.Background>
