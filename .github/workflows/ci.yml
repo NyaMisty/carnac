@@ -47,7 +47,9 @@ jobs:
           msbuild-architecture: x64
 
       - name: Do Build
-        run: powershell .\build.ps1 --githubrepo ${{ github.repository }}
+        run: |
+          git branch -M master
+          powershell .\build.ps1 --githubrepo ${{ github.repository }}
         shell: pwsh
 
       - name: Unzip deploy files
