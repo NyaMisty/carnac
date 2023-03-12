@@ -54,7 +54,7 @@ jobs:
 
       - name: Unzip deploy files
         run: |
-          mkdir -p deploy/GithubUnzip && cd deploy/GithubUnzip && unzip ../GitHub/*.zip
+          (mkdir -p deploy/GithubUnzip && cd deploy/GithubUnzip && unzip ../GitHub/*.zip)
           rm -f deploy/GithubUnzip/*-delta.nupkg
         shell: bash
 
