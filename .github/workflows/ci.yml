@@ -48,7 +48,7 @@ jobs:
 
       - name: Do Build
         run: |
-          git branch -M master
+          git branch -f master
           powershell .\build.ps1 --githubrepo ${{ github.repository }}
         shell: pwsh
 
