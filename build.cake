@@ -66,7 +66,7 @@ Task("Build")
     .Does(() => 
     {
         MSBuild(solutionFile, settings =>
-            settings.SetConfiguration(configuration));
+            settings.UseToolVersion(MSBuildToolVersion.Default).SetConfiguration(configuration));
     });
 
 Task("Run-Unit-Tests")

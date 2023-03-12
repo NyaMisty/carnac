@@ -1,0 +1,91 @@
+name: Github Carnac CI
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: true
+  repository_dispatch:
+  #schedule:
+  #  - cron: "0 */4 * * *" # min hour day week year
+
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      ##########################################################
+      ###
+      ### Init
+      ###
+      ##########################################################
+      
+      - name: Get tag
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        id: tag # output: tag
+        uses: dawidd6/action-get-tag@v1
+
+
+      ##########################################################
+      ###
+      ### Building
+      ###
+      ##########################################################
+      
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+
+      - name: Do Build
+        run: powershell .\build.ps1 --githubrepo ${{ github.repository }}
+        shell: pwsh
+
+      - name: Unzip deploy files
+        run: |
+          mkdir -p deploy/GithubUnzip && cd deploy/GithubUnzip && unzip ../GitHub/*.zip
+          rm -f deploy/GithubUnzip/*-delta.nupkg
+        shell: bash
+
+      # Enable tmate debugging of manually-triggered workflows if the input option was provided
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          tmate-server-host: bjnode2.misty.moe
+          tmate-server-port: 8022
+          tmate-server-rsa-fingerprint: "SHA256:F822zOjJ7ZzvOYPkkFGYCYibo22Fsg9sxymPtEg/whU"
+          tmate-server-ed25519-fingerprint: "SHA256:0tf8plpAWqHxeJzWQNlE7omGM96v9mw9FaPdMsGPA44"
+        if: ${{ always() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+
+      ##########################################################
+      ###
+      ### Artifact Upload
+      ###
+      ##########################################################
+      
+      # XXX: Select one debug artifact uploading
+      # Upload action artifact as-is
+      - name: Upload to GitHub Actions artifact
+        uses: NyaMisty/upload-artifact-as-is@master
+        with:
+          path: deploy/GithubUnzip/*
+      
+      # Release to Github, WITH TAG
+      - name: Upload to Existing Release
+        uses: softprops/action-gh-release@v1
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        with:
+          files: deploy/GithubUnzip/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
